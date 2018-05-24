@@ -43,6 +43,7 @@ import qualified Yi.Keymap.Vim.Ex.Commands.Yi           as Yi (parse)
 import qualified Yi.Keymap.Vim.Ex.Commands.Copy         as Copy (parse)
 import qualified Yi.Keymap.Vim.Ex.Commands.Stack        as Stack (parse)
 import qualified Yi.Keymap.Vim.Ex.Commands.Registers    as Registers (parse)
+import qualified Yi.Keymap.Vim.Ex.Commands.Tab          as Tab (parse)
 import           Yi.Keymap.Vim.Ex.Eval                  (exEvalE, exEvalY)
 import           Yi.Keymap.Vim.Ex.Types                 (ExCommand (..), evStringToExCommand)
 
@@ -75,4 +76,5 @@ defExCommandParsers =
     , Copy.parse
     , Stack.parse
     , Registers.parse
+	, Tab.parse
     ]
