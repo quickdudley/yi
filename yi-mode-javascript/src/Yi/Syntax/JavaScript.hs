@@ -105,6 +105,7 @@ data Expr t = ExprObj t (BList (KeyValue t)) t
             | ExprCond t (Expr t) t (Expr t)
             | ExprArr t (Maybe (Array t)) t (Maybe (Expr t))
             | PostExpr t
+            | JSXExpr t t (BList (KeyValue t)) t (Maybe ([Expr t],t,t,t))
             | ExprErr t
               deriving (Show, Data, Typeable, Foldable)
 
@@ -257,6 +258,13 @@ instance Strokable (Expr TT) where
     toStrokes (ExprArr l x r m) =
         let s = failStroker [l, r] in
         s l <> maybe mempty toStrokes x <> s r <> maybe mempty toStrokes m
+    toStrokes (JSXExpr l n p r mcc) =
+        let s = failStroker [l, n, r] in
+        s l <> s n <> foldMap toStrokes p <> s r <> case mcc of
+          Nothing -> mempty
+          Just (c,cl,cn,cr) -> let
+            s2 = failStroker [cl,cn,cr]
+            in foldMap toStrokes c <> s2 cl <> s2 cn <> s2 cr
     toStrokes (ExprErr t) = error t
 
 instance Strokable (Parameters TT) where
