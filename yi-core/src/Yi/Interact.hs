@@ -1,9 +1,11 @@
-{-# LANGUAGE FlexibleInstances      #-}
-{-# LANGUAGE FunctionalDependencies #-}
-{-# LANGUAGE GADTs                  #-}
-{-# LANGUAGE OverloadedStrings      #-}
-{-# LANGUAGE ScopedTypeVariables    #-}
-{-# LANGUAGE UndecidableInstances   #-}
+{-# LANGUAGE FlexibleInstances          #-}
+{-# LANGUAGE FunctionalDependencies     #-}
+{-# LANGUAGE GADTs                      #-}
+{-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE ScopedTypeVariables        #-}
+{-# LANGUAGE UndecidableInstances       #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE CPP                        #-}
 {-# OPTIONS_HADDOCK show-extensions #-}
 
 {-|
@@ -221,6 +223,11 @@ pushEvent (Chain p q) e = Chain (pushEvent p e) q
 
 -- | Abstraction of the automaton state.
 data InteractState event w =  Ambiguous [(Int,w,P event w)] | Waiting | Dead | Running w (P event w)
+
+#if __GLASGOW_HASKELL__ >= 804 
+instance Semigroup (InteractState event w) where
+  (<>) = mappend
+#endif
 
 instance Monoid (InteractState event w) where
     -- not used at the moment:
