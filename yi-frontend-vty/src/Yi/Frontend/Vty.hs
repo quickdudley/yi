@@ -56,8 +56,8 @@ import qualified Graphics.Vty                   as Vty (Attr, Cursor (Cursor, No
                                                         horizCat, mkVty,
                                                         picForLayers,
                                                         standardIOConfig,
-                                                        string,
-                                                        reverseVideo, text',
+                                                        string, reverseVideo,
+                                                        rgbColor, text',
                                                         translate, underline,
                                                         vertCat, withBackColor,
                                                         withForeColor,
@@ -389,7 +389,7 @@ drawText wsty h w tabWidth linesInfo bufData
     renderLineNumber :: Int -> Maybe Int -> Vty.Image
     renderLineNumber w' (Just n) = Vty.charFill wsty ' ' (w' - length (show n) - 1) 1
                                    Vty.<|>
-                                   Vty.string wsty (show n)
+                                   Vty.string (wsty `Vty.withForeColor` Vty.rgbColor 255 32 255) (show n)
                                    Vty.<|>
                                    Vty.char wsty ' '
     renderLineNumber w' Nothing  = Vty.charFill wsty ' ' w' 1
